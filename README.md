@@ -14,13 +14,13 @@ Make sure you have the following prerequisites installed on your system:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/receipt-organizer.git
+   git clone https://github.com/NavneethRaj/receipts-manager
    ```
    
 2. Change into the project directory:
 
     ```
-    cd receipt-organizer
+    cd receipt-app
     ```
 
 3. Create a virtual environment (optional but recommended):
@@ -44,7 +44,7 @@ Make sure you have the following prerequisites installed on your system:
     pip install -r requirements.txt
     ```
 
-5. Configuration
+5. Configuration (skip)
     Open the app.py file and set a secret key for session management. Modify the following line:
 
     app.secret_key = 'your_secret_key'
