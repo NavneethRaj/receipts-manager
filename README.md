@@ -20,23 +20,26 @@ Make sure you have the following prerequisites installed on your system:
 2. Change into the project directory:
 
     ```
-    cd receipt-app
+    cd receipt-manager
     ```
 
 3. Create a virtual environment (optional but recommended):
 
     ```shell
     python3 -m venv venv
+    ```
 
 4. Activate the virtual environment:
 
     On Windows:
     ```shell
     venv\Scripts\activate
+    ```
     
     On macOS and Linux:
     ```shell
     source venv/bin/activate
+    ```
 
 4. Install the project dependencies:
 
@@ -54,6 +57,7 @@ Make sure you have the following prerequisites installed on your system:
 
         ```shell
         python app.py
+        ```
     2. Open your web browser and go to http://localhost:5000.
     3. You should see the homepage of the Receipt Organizer web application.
 
