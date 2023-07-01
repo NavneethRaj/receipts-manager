@@ -1,11 +1,25 @@
 import pytesseract
 from PIL import Image
 import re
+from io import BytesIO
+
+"""
+The decision to make the functions in the OCR class static is likely driven by the nature of the class and its purpose. Here are a few possible reasons:
+
+1. Simplicity: Making the functions static allows them to be accessed without the need to create an instance of the OCR class. It simplifies the usage of the OCR functionality by avoiding the need to create an unnecessary instance.
+
+2. Utility Functions: The functions in the OCR class seem to provide utility operations for extracting specific information from the extracted text. They are standalone functions that don't require any state or instance-specific data. In such cases, making them static methods is a common design choice.
+
+3. Code Organization: Making the functions static allows them to be grouped together within the OCR class, providing a logical organization of related OCR operations.
+
+It's important to note that the decision to make functions static or instance methods depends on the specific requirements and design choices of the application. In this case, making the functions static seems appropriate given their purpose and usage within the application.
+"""
 
 class OCR:
     @staticmethod
-    def extract_text(image_path):
-        extracted_text = pytesseract.image_to_string(Image.open(image_path), lang='eng')
+    def extract_text_from_bytes(image_bytes):
+        image = Image.open(BytesIO(image_bytes))
+        extracted_text = pytesseract.image_to_string(image, lang='eng')
         return extracted_text
 
     @staticmethod
