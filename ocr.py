@@ -2,6 +2,7 @@ import pytesseract
 from PIL import Image
 import re
 from io import BytesIO
+import datetime
 
 """
 The decision to make the functions in the OCR class static is likely driven by the nature of the class and its purpose. Here are a few possible reasons:
@@ -52,11 +53,12 @@ class OCR:
 
     @staticmethod
     def extract_date(extracted_text):
-        # pattern = r'\b(\d{1,2}/\d{1,2}/\d{2,4})\b'
         pattern = r'((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4})'
         match = re.search(pattern, extracted_text)
         if match:
-            date = match.group(1)
-            return date
+            date_str = match.group(1)
+            date_obj = datetime.datetime.strptime(date_str, '%B %d, %Y').date()
+            formatted_date = date_obj.strftime('%Y-%m-%d')
+            return formatted_date
         else:
             return None
