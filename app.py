@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash
 from flask_table import Table, Col, LinkCol
 from datetime import datetime
 import os
 from ocr import OCR
 from receipt_db import Receipt, ReceiptDB
 from date_utils import DateConverter
+from image_validator import ImageValidator
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -44,25 +45,29 @@ def application():
         file = request.files['file']
         if file.filename == '':
             return 'No file selected', 400
+        elif ImageValidator.is_not_receipt(file):
+            flash('Image not supported')
+            return redirect(request.url)
+        else:
+            file_bytes = file.read()  # Read the file content as bytes
 
-        file_bytes = file.read()  # Read the file content as bytes
+            extracted_text = OCR.extract_text_from_bytes(file_bytes)
+            total_amount = OCR.extract_total_amount(extracted_text)
+            vendor_name = OCR.extract_vendor_name(extracted_text)
+            date = OCR.extract_date(extracted_text)
 
-        extracted_text = OCR.extract_text_from_bytes(file_bytes)
-        total_amount = OCR.extract_total_amount(extracted_text)
-        vendor_name = OCR.extract_vendor_name(extracted_text)
-        date = OCR.extract_date(extracted_text)
+            receipt = Receipt({
+                0: None,
+                1: vendor_name,
+                2: date,
+                3: total_amount
+            })
 
-        receipt = Receipt({
-            0: None,
-            1: vendor_name,
-            2: date,
-            3: total_amount
-        })
+            db.insert_receipt(receipt)
 
-        db.insert_receipt(receipt)
-
-        # Clear the form data to prevent resubmission on refresh
-        return redirect(request.url)
+            # Clear the form data to prevent resubmission on refresh
+            flash('Upload successful')
+            return redirect(request.url)
 
     # Retrieve the start and end dates from the query parameters
     start_date_str = request.args.get('start_date')
