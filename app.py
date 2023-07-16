@@ -13,7 +13,7 @@ db = ReceiptDB('receipts.db')
 db.create_table()
 
 class ReceiptTable(Table):
-    id = Col('Receipt ID')
+    # id = Col('Receipt ID')
     vendor_name = Col('Vendor Name', allow_sort=True)
     date = Col('Date', allow_sort=True)
     total_amount = Col('Total Amount')
@@ -29,7 +29,6 @@ class ReceiptTable(Table):
 
     # Add Bootstrap class attributes to table elements
     classes = ['table', 'table-striped', 'table-bordered', 'table-hover']
-
 
 @app.route('/')
 def home():
